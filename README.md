@@ -1,8 +1,9 @@
 # 🌱 Greenhouse
 
 Timer de foco baseado na técnica Pomodoro, **adaptado para o cérebro com TDAH**.
-Aplicação 100% client-side: sem backend, sem cadastro e **sem nenhuma requisição
-de rede em tempo de execução**. Todo o estado vive no `localStorage`.
+Aplicação 100% client-side: sem backend e sem cadastro — toda a funcionalidade
+roda offline e o estado vive no `localStorage`. A única rede opcional é uma
+medição anônima (Google Analytics), carregada **apenas após consentimento**.
 
 > Construído em Nuxt 4 com **Domain-Driven Design** e os princípios **SOLID**.
 

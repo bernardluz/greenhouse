@@ -18,6 +18,15 @@ export default defineNuxtConfig({
     '@fontsource-variable/spline-sans-mono/index.css',
   ],
 
+  modules: ['nuxt-gtag'],
+
+  // Google Analytics 4 em modo manual: o gtag.js só carrega após o
+  // consentimento do usuário (Consent Mode) — nenhuma rede até o aceite.
+  gtag: {
+    id: 'G-FX3NXLW0C8',
+    initMode: 'manual',
+  },
+
   dir: {
     pages: 'presentation/pages',
   },
