@@ -6,45 +6,27 @@ defineProps<{
 </script>
 
 <template>
-  <div class="counter" aria-label="Histórico do dia">
-    <div class="counter__item">
-      <strong>{{ completed }}</strong>
-      <span>completos</span>
-    </div>
-    <div class="counter__divider" aria-hidden="true" />
-    <div class="counter__item">
-      <strong>{{ abandoned }}</strong>
-      <span>abandonados</span>
-    </div>
+  <div class="ledger" aria-label="Histórico do dia">
+    <span class="ledger__n">{{ completed }}</span> cultivados
+    <span class="ledger__sep" aria-hidden="true">·</span>
+    <span class="ledger__n">{{ abandoned }}</span> interrompidos
   </div>
 </template>
 
 <style scoped>
-.counter {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 0.5rem 1.1rem;
-}
-.counter__item {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-}
-.counter__item strong {
-  font-size: 1.2rem;
-  font-variant-numeric: tabular-nums;
-}
-.counter__item span {
+.ledger {
+  font-family: var(--font-label);
   font-size: 0.78rem;
-  color: var(--muted);
+  letter-spacing: 0.08em;
+  color: var(--copper-verdet);
+  text-transform: lowercase;
 }
-.counter__divider {
-  width: 1px;
-  height: 22px;
-  background: var(--border);
+.ledger__n {
+  color: var(--paper);
+  font-weight: 600;
+}
+.ledger__sep {
+  margin: 0 0.55em;
+  opacity: 0.5;
 }
 </style>

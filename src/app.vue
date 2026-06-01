@@ -1,5 +1,6 @@
 <script setup lang="ts">
-// Componente raiz do Nuxt: monta o roteador e define os tokens/estilos globais.
+// Componente raiz: monta o roteador e define os tokens da direção "Condensation"
+// (estufa vitoriana ao entardecer) — paleta, tipografia serif/mono e reset.
 </script>
 
 <template>
@@ -8,19 +9,39 @@
 
 <style>
 :root {
-  --bg: oklch(22% 0.02 150);
-  --surface: oklch(27% 0.03 155);
-  --surface-2: oklch(32% 0.035 155);
-  --border: oklch(40% 0.03 155 / 0.5);
-  --text: oklch(96% 0.01 150);
-  --muted: oklch(72% 0.02 150);
-  --focus: oklch(74% 0.17 150);
-  --break: oklch(76% 0.12 235);
-  --danger: oklch(70% 0.18 25);
-  --radius: 18px;
-  --space: clamp(1rem, 0.6rem + 1.5vw, 2rem);
-  --font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, 'SFMono-Regular', 'Cascadia Code', monospace;
+  /* Base: vidro de estufa ao entardecer */
+  --glass-deep: #0e1a14;
+  --glass-dark: #14241b;
+  --glass-mid: #1e3328;
+  --glass-fog: #2a4538;
+
+  /* Folhagem: verdes vivos, com parcimônia */
+  --leaf: #4a7c59;
+  --leaf-bright: #6fa67c;
+
+  /* Cobre oxidado: único acento quente */
+  --copper: #b06a3e;
+  --copper-verdet: #7fa68b;
+  --brass: #c9a24b;
+
+  /* Papel e tinta: herbário */
+  --paper: #e8e2d0;
+  --ink: #2b2a24;
+  --ink-faded: #6b6452;
+
+  /* Sinalização funcional */
+  --signal-rest: #7fa68b;
+  --signal-focus: #c9a24b;
+
+  /* Tipografia — sem nenhuma sans de sistema */
+  --font-display: 'Fraunces Variable', 'Spectral', Georgia, serif;
+  --font-body: 'Newsreader Variable', 'Source Serif 4', Georgia, serif;
+  --font-label: 'Spline Sans Mono Variable', 'IBM Plex Mono', monospace;
+
+  /* Unidade base 8px (uso deliberadamente não-uniforme) */
+  --u: 8px;
+
+  color-scheme: dark;
 }
 
 * {
@@ -35,13 +56,12 @@ body,
 }
 
 body {
-  font-family: var(--font);
-  background:
-    radial-gradient(1100px 560px at 82% -12%, oklch(32% 0.07 162 / 0.55), transparent 62%),
-    var(--bg);
-  color: var(--text);
+  font-family: var(--font-body);
+  background: var(--glass-dark);
+  color: var(--paper);
   -webkit-font-smoothing: antialiased;
-  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+  line-height: 1.55;
 }
 
 button {
@@ -57,9 +77,14 @@ input {
   color: inherit;
 }
 
+/* Foco visível em latão, canto vivo — nada de raio universal */
 :focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 2px;
-  border-radius: 8px;
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--brass);
+  color: var(--glass-deep);
 }
 </style>

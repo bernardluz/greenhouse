@@ -16,6 +16,9 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
+    "@fontsource-variable/fraunces": "^5.2.9",
+    "@fontsource-variable/newsreader": "^5.2.10",
+    "@fontsource-variable/spline-sans-mono": "^5.2.8",
     "nuxt": "^4.4.6",
     "vue": "^3.5.35",
     "vue-router": "^4.6.4"

@@ -11,6 +11,13 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-06-01',
   devtools: { enabled: true },
 
+  // Fontes self-hosted (empacotadas no bundle) — zero requisição de rede em runtime.
+  css: [
+    '@fontsource-variable/fraunces/opsz.css',
+    '@fontsource-variable/newsreader/index.css',
+    '@fontsource-variable/spline-sans-mono/index.css',
+  ],
+
   dir: {
     pages: 'presentation/pages',
   },

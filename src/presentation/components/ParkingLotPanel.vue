@@ -31,156 +31,183 @@ function focusInput(): void {
 }
 
 defineExpose({ focusInput })
+
+/** Inclinação determinística por id — etiquetas pregadas à mão. */
+function tilt(id: string): string {
+  let hash = 0
+  for (let i = 0; i < id.length; i += 1) {
+    hash = (hash * 31 + id.charCodeAt(i)) | 0
+  }
+  const degrees = ((hash % 5) - 2) * 0.8
+  return `rotate(${degrees}deg)`
+}
+
+function stamp(at: number): string {
+  return new Date(at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })
+}
 </script>
 
 <template>
-  <aside class="parking">
-    <header class="parking__head">
-      <h2>Parking lot</h2>
-      <span class="parking__count">{{ openItems.length }} aberta(s)</span>
+  <aside class="shelf">
+    <header class="shelf__head">
+      <span class="shelf__title">prateleira</span>
+      <span class="shelf__count">{{ openItems.length }} em aberto</span>
     </header>
 
-    <form class="parking__form" @submit.prevent="submit">
+    <form class="shelf__capture" @submit.prevent="submit">
       <input
         ref="inputEl"
         v-model="draft"
-        class="parking__input"
+        class="shelf__input"
         type="text"
-        :placeholder="captureEnabled ? 'Anote a distração e volte ao foco…' : 'Inicie um foco para capturar'"
+        :placeholder="captureEnabled ? 'arquive o pensamento…' : 'inicie um foco para anotar'"
         :disabled="!captureEnabled"
         aria-label="Capturar distração"
       />
-      <button class="parking__add" type="submit" :disabled="!captureEnabled">Anotar</button>
+      <button class="shelf__file" type="submit" :disabled="!captureEnabled" aria-label="Arquivar">↵</button>
     </form>
 
-    <ul v-if="items.length" class="parking__list">
+    <ul v-if="items.length" class="specimens">
       <li
         v-for="item in items"
         :key="item.id"
-        class="item"
-        :class="`item--${item.status.toLowerCase()}`"
+        class="specimen"
+        :class="`specimen--${item.status.toLowerCase()}`"
+        :style="{ transform: tilt(item.id) }"
       >
-        <span class="item__text">{{ item.text }}</span>
-        <div v-if="item.isOpen" class="item__actions">
+        <span class="specimen__pin" aria-hidden="true" />
+        <div class="specimen__body">
+          <span class="specimen__text">{{ item.text }}</span>
+          <span class="specimen__date">{{ stamp(item.capturedAt) }}</span>
+        </div>
+        <div v-if="item.isOpen" class="specimen__actions">
           <button title="Marcar como resolvida" @click="emit('resolve', item.id)">✓</button>
           <button title="Descartar" @click="emit('discard', item.id)">✕</button>
         </div>
-        <span v-else class="item__badge">
-          {{ item.status === 'Resolved' ? 'resolvida' : 'descartada' }}
-        </span>
       </li>
     </ul>
-    <p v-else class="parking__empty">Nenhuma distração capturada ainda.</p>
+    <p v-else class="shelf__empty">nenhum espécime arquivado.</p>
   </aside>
 </template>
 
 <style scoped>
-.parking {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.25rem;
+.shelf {
+  font-family: var(--font-label);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  min-height: 0;
+  gap: calc(var(--u) * 1.5);
+  padding-left: calc(var(--u) * 2.5);
+  border-left: 1px solid color-mix(in oklab, var(--copper) 30%, transparent);
 }
-.parking__head {
+.shelf__head {
   display: flex;
-  align-items: baseline;
   justify-content: space-between;
+  align-items: baseline;
 }
-.parking__head h2 {
-  font-size: 1.1rem;
+.shelf__title {
+  letter-spacing: 0.24em;
+  text-transform: lowercase;
+  color: var(--copper-verdet);
 }
-.parking__count {
-  font-size: 0.8rem;
-  color: var(--muted);
+.shelf__count {
+  font-size: 0.72rem;
+  color: var(--ink-faded);
 }
-.parking__form {
+.shelf__capture {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--u);
 }
-.parking__input {
+.shelf__input {
   flex: 1;
   min-width: 0;
-  padding: 0.7rem 0.9rem;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--bg);
+  background: color-mix(in oklab, var(--paper) 8%, transparent);
+  border: 1px solid color-mix(in oklab, var(--copper-verdet) 30%, transparent);
+  color: var(--paper);
+  padding: calc(var(--u) * 0.9) var(--u);
+  font-size: 0.85rem;
 }
-.parking__input:disabled {
-  opacity: 0.55;
+.shelf__input::placeholder {
+  color: var(--ink-faded);
 }
-.parking__add {
-  padding: 0 1rem;
-  border-radius: 12px;
-  background: var(--focus);
-  color: oklch(20% 0.03 150);
-  font-weight: 600;
+.shelf__file {
+  border: 1px solid color-mix(in oklab, var(--copper) 50%, transparent);
+  color: var(--brass);
+  width: 38px;
 }
-.parking__add:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.shelf__file:disabled {
+  opacity: 0.35;
 }
-.parking__list {
+.specimens {
   list-style: none;
-  padding: 0;
+  padding: var(--u) 0 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  overflow-y: auto;
+  gap: calc(var(--u) * 1.5);
 }
-.item {
+
+/* Etiqueta de herbário: papel de algodão real, tinta sépia, alfinete de cobre */
+.specimen {
+  position: relative;
   display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  justify-content: space-between;
-  padding: 0.6rem 0.8rem;
-  background: var(--surface-2);
-  border-radius: 12px;
-  transition: opacity 0.2s ease;
+  align-items: flex-start;
+  gap: var(--u);
+  background: var(--paper);
+  color: var(--ink);
+  padding: calc(var(--u) * 1.2) calc(var(--u) * 1.4);
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.28);
+  transition:
+    opacity 0.4s ease,
+    box-shadow 0.3s ease;
 }
-.item--resolved,
-.item--discarded {
-  opacity: 0.5;
+.specimen__pin {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--copper);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--copper) 40%, transparent);
 }
-.item--discarded .item__text {
-  text-decoration: line-through;
-}
-.item__text {
+.specimen__body {
   flex: 1;
-  font-size: 0.92rem;
+  display: grid;
+  gap: 2px;
+}
+.specimen__text {
+  font-size: 0.88rem;
   word-break: break-word;
 }
-.item__actions {
+.specimen__date {
+  font-size: 0.68rem;
+  color: var(--ink-faded);
+  letter-spacing: 0.06em;
+}
+.specimen--resolved {
+  opacity: 0.55;
+}
+.specimen--discarded {
+  opacity: 0.4;
+}
+.specimen--discarded .specimen__text {
+  text-decoration: line-through;
+}
+.specimen__actions {
   display: flex;
-  gap: 0.3rem;
+  gap: 4px;
 }
-.item__actions button {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: var(--bg);
-  color: var(--muted);
-  transition:
-    color 0.2s ease,
-    background 0.2s ease;
+.specimen__actions button {
+  width: 24px;
+  height: 24px;
+  color: var(--ink-faded);
+  border: 1px solid color-mix(in oklab, var(--ink) 20%, transparent);
 }
-.item__actions button:hover {
-  color: var(--text);
-  background: oklch(38% 0.04 155);
+.specimen__actions button:hover {
+  color: var(--ink);
+  border-color: var(--ink);
 }
-.item__badge {
-  font-size: 0.72rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-.parking__empty {
-  color: var(--muted);
-  font-size: 0.9rem;
-  text-align: center;
-  padding: 1rem 0;
+.shelf__empty {
+  color: var(--ink-faded);
+  font-size: 0.8rem;
 }
 </style>
