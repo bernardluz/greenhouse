@@ -3,6 +3,8 @@
 // O Nuxt só "enxerga" a camada de apresentação (src/presentation/*).
 // As camadas internas (domain/application/infrastructure) são TypeScript puro,
 // importadas via alias `~/<camada>`, o que reforça a separação DDD.
+import { defineNuxtConfig } from 'nuxt/config'
+
 export default defineNuxtConfig({
   ssr: false,
   srcDir: 'src',
