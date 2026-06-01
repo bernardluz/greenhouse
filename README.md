@@ -6,7 +6,7 @@ de rede em tempo de execução**. Todo o estado vive no `localStorage`.
 
 > Construído em Nuxt 4 com **Domain-Driven Design** e os princípios **SOLID**.
 
-**▶ Acesse:** [greenhouse.bernardluz.com](https://greenhouse.bernardluz.com) — _em breve (deploy no Render)_
+**▶ Acesse:** [greenhouse.bernardluz.com](https://greenhouse.bernardluz.com)
 
 ---
 
@@ -123,7 +123,7 @@ build. Cobertura acima de **80%** (statements ~95%, branches ~89%).
 `npm run generate` produz um site **100% estático** em `.output/public`,
 publicável em qualquer hospedagem estática — sem servidor.
 
-Destino: **Render** (Static Site) → [greenhouse.bernardluz.com](https://greenhouse.bernardluz.com)
+Hospedado no **Render** (Static Site): [greenhouse.bernardluz.com](https://greenhouse.bernardluz.com)
 
 - **Build Command:** `npm run generate`
 - **Publish Directory:** `.output/public`
