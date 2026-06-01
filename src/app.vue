@@ -5,6 +5,7 @@
 
 <template>
   <NuxtPage />
+  <ConsentBanner />
 </template>
 
 <style>
